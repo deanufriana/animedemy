@@ -1,0 +1,3 @@
+rootProject.name = 'animedemy'
+
+include ':app'
