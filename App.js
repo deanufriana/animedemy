@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
-import
+import { createStackNavigator, createAppContainer } from 'react-navigation'
 
-export default class App extends Component {
-  render() {
-    return (
-      <div>
-        
-      </div>
-    )
-  }
-}
+import { Login } from './app/screen'
+
+const App = createStackNavigator({
+    Login: {
+        screen: Login
+    }
+})
+
+export default createAppContainer(App)
