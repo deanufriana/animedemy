@@ -3,11 +3,11 @@ import reducers from './reducers'
 import promiseMiddleware from 'redux-promise-middleware'
 
 // store akan menyimpan data reducer
-const configureStore = createStore(
+const store = createStore(
     reducers,
     applyMiddleware(
         promiseMiddleware()
     )
 )
 
-export default configureStore
+export default store
