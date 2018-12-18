@@ -6,7 +6,6 @@ const RootNavigator = createStackNavigator({
     Login: {
         screen: Login
     }
-
 })
 
 export default RootNavigator

@@ -1,13 +1,6 @@
 /* Ini merupakan action function dimana nantinya akan di panggil di tampilan dan menetapkan data dimana ia dibutuhkan */
-
+import categories from '../data/categories'
 import axios from 'axios'
-
-export function INC(text) {
-    return {
-        type: "INC",
-        payload: text
-    }
-}
 
 export function ALL_MOVIES() {
     return {
