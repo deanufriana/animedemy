@@ -11,7 +11,7 @@ function videoReducers(state = initialState, action) {
     switch (action.type) {
 
         case "ALL_VIDEOS":
-        return { ...state, isLoading: true, results: action.payload }
+            return { ...state, isLoading: true, results: action.payload }
         case "ALL_VIDEOS_PENDING":
             return { ...state, isLoading: true, results: action.payload }
         case "ALL_VIDEOS_FULFILLED":

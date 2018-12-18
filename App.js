@@ -1,6 +1,7 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen } from './app/screens'
 
+
 const App = createStackNavigator(
     {
         Login: {
@@ -21,10 +22,14 @@ const App = createStackNavigator(
                 header: null
             }
         },
-        Splash: { screen: SplashScreen, navigationOptions: { header: null } }
+        Splash: {
+            screen: SplashScreen, navigationOptions: {
+                header: null
+            }
+        }
     },
     {
-        initialRouteName: 'Directory'
+        initialRouteName: 'Login'
     }
 )
 
