@@ -7,8 +7,6 @@ import TryTab from '../components/TryTab'
 import Video from 'react-native-video'
 import Orientation from 'react-native-orientation'
 
-const { width } = Dimensions.get('window')
-
 class MovieScreen extends Component {
 
     state = {
@@ -31,12 +29,21 @@ class MovieScreen extends Component {
 
     press = () => this.setState({ pause: !this.state.pause })
 
+    goBack = () => {
+        if (this.state.fullscreen) {
+            Orientation.lockToPortrait()
+            this.setState({ fullscreen: !this.state.fullscreen })
+        } else {
+            this.props.navigation.goBack()
+        }
+    }
+
     controlButton = () => {
         if (this.state.pause) {
             return (
                 <ImageBackground source={require('../assets/img/slider1.jpg')} style={styles.image}>
                     <View style={{ flex: 1 }}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                        <TouchableOpacity onPress={this.goBack}>
                             <View style={{ alignSelf: 'flex-start', marginLeft: 10, marginTop: 10, borderRadius: 150 / 2, backgroundColor: 'white', height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}>
                                 <Icon name='md-arrow-back' style={{ color: '#00C0C1' }} />
                             </View>
@@ -81,33 +88,28 @@ class MovieScreen extends Component {
         //  alert(this.props.navigation.getParam('id', 'nodata'))
         return (
             <Container>
-                <View style={styles.container}>
+                <TouchableOpacity style={{ justifyContent: 'space-between', flex: 1 }} onPress={this.press}>
+                    <Video source={{ uri: "https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8" }}   // Can be a URL or a local file.
+                        ref={(ref) => {
+                            this.player = ref
+                        }}
+                        // poster={ "http://cdn56.picsart.com/175939569000202.gif"}
+                        // posterResizeMode={'cover'}                                // Store reference
+                        onBuffer={this.Buffer}                // Callback when remote video is buffering
+                        onError={this.videoError}
+                        fullscreen={this.state.fullscreen}
+                        resizeMode={"stretch"}
+                        paused={this.state.pause}
+                        // Callback when video cannot be loaded
+                        style={styles.backgroundVideo}
+                    />
 
-                    <TouchableOpacity style={{ justifyContent: 'space-between', flex: 1 }} onPress={this.press}>
-                        <Video source={{ uri: "https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8" }}   // Can be a URL or a local file.
-                            ref={(ref) => {
-                                this.player = ref
-                            }}
-                            poster={"http://cdn56.picsart.com/175939569000202.gif"}
-                            posterResizeMode={'cover'}                                // Store reference
-                            onBuffer={this.Buffer}                // Callback when remote video is buffering
-                            onError={this.videoError}
-                            fullscreen={this.state.fullscreen}
-                            resizeMode={"stretch"}
-                            paused={this.state.pause}
-                            // Callback when video cannot be loaded
-                            style={styles.backgroundVideo}
-                        />
-
-                        {this.controlButton()}
-                    </TouchableOpacity>
-
-
-                </View>
+                    {this.controlButton()}
+                </TouchableOpacity>
                 {
                     this.state.fullscreen ||
                     <LinearGradient colors={['#010101', '#1A222E']} style={styles.linearGradient}>
-                        <View style={{ flex: 2, backgroundColor: '#1A222E' }}>
+                        <View style={{ flex: 1, backgroundColor: '#1A222E' }}>
                             <TryTab />
                         </View>
                     </LinearGradient>
@@ -122,17 +124,25 @@ export default MovieScreen
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        height: 180
-
+        height: 180,
+    },
+    backgroundVideo: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        width: null,
+        height: null
     },
     image: {
-        flex: 1,
-        width,
-        height: 180
+        width: null,
+        height: null,
+        flex: 1
 
     },
     linearGradient: {
-        flex: 1,
+        flex: 2,
 
     }
 })
