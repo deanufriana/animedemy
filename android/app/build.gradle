@@ -96,7 +96,7 @@ def enableProguardInReleaseBuilds = false
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
+    
     defaultConfig {
         applicationId "com.animedemy"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -134,9 +134,14 @@ android {
             }
         }
     }
+    
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
+    compile project(':react-native-video')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-gesture-handler')
     implementation fileTree(dir: "libs", include: ["*.jar"])

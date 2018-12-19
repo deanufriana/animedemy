@@ -1,5 +1,6 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen } from './app/screens'
+import Login from './app/screenContoh/Login'
 
 
 const App = createStackNavigator(
@@ -24,6 +25,12 @@ const App = createStackNavigator(
         },
         Splash: {
             screen: SplashScreen, navigationOptions: {
+                header: null
+            }
+        },
+        Home: {
+            screen: Login,
+            navigationOptions: {
                 header: null
             }
         }
