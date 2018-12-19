@@ -1,13 +1,52 @@
 import React,{Component} from 'react'
-import {Text,View,StyleSheet} from 'react-native'
+import {Text,View,StyleSheet,ScrollView,Image} from 'react-native'
 import {Container, Header, Left, Body, Right, Icon, Content} from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
-import Swiper from 'react-native-swiper'
 
 import Slide from '../components/Swiper'
+import CusCardView from '../components/CusCardView'
 
 
 class DirectoryScreen extends Component{
+    constructor(props){
+        super(props)
+        this.state={
+            Best:[{
+                image : require('../assets/img/baku.jpg'),
+                age :'13+',
+                title : 'Baku Matsu',
+                star:4.2,
+                imdb : '8.0'
+
+            },
+            {
+                image : require('../assets/img/baku.jpg'),
+                age :'13+',
+                title : 'Baku Matsu',
+                star:4.2,
+                imdb : '8.0'
+
+            },
+            {
+                image : require('../assets/img/baku.jpg'),
+                age :'13+',
+                title : 'Baku Matsu',
+                star:4.2,
+                imdb : '8.0'
+
+            },
+            {
+                image : require('../assets/img/baku.jpg'),
+                age :'13+',
+                title : 'Baku Matsu',
+                star:4.2,
+                imdb : '8.0'
+
+            }
+        ]
+        }
+    }
+
     render(){
         return(
             <Container>
@@ -27,33 +66,53 @@ class DirectoryScreen extends Component{
                     </Header>
                     <Content>
                         <Slide/>
-                        {/* <Swiper style={{}}>
-                        <View style={{flex: 1,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: '#9DD6EB'}}>
-                            <Text style={{color: '#fff',
-                                            fontSize: 30,
-                                            fontWeight: 'bold'}}>Hello Swiper</Text>
+                        <View> 
+                            <View style={{flex:1,flexDirection:'row',marginTop:20,marginLeft:20}}>
+                                <Text style={{fontFamily:'OpenSans-Bold',fontSize:18,color:'#00C0C1'}}>
+                                    New Release
+                                </Text>
+                                
+                            </View>
+                            <ScrollView horizontal style={{marginLeft:20,marginTop:10}} showsHorizontalScrollIndicator={false}>
+                                {this.state.Best.map((item,key)=>(
+                                    <CusCardView
+                                        image={item.image}
+                                        age={item.age}
+                                        title = {item.title}
+                                        star = {item.star}
+                                        imdb ={item.imdb}
+                                        key={key}
+                                        />
+                                ))}
+
+                            </ScrollView>
+
                         </View>
 
-                        <View style={{flex: 1,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: '#97CAE5'}}>
-                            <Text style={{color: '#fff',
-                                            fontSize: 30,
-                                            fontWeight: 'bold'}}>Beautiful</Text>
+                        <View> 
+                            <View style={{flex:1,flexDirection:'row',marginTop:20,marginLeft:20}}>
+                                <Text style={{fontFamily:'OpenSans-Bold',fontSize:18,color:'#00C0C1'}}>
+                                    Best Popular
+                                </Text>
+                                
+                            </View>
+                            <ScrollView horizontal style={{marginLeft:20,marginTop:10,marginBottom:10}} showsHorizontalScrollIndicator={false}>
+                                {this.state.Best.map((item,key)=>(
+                                    <CusCardView
+                                        image={item.image}
+                                        age={item.age}
+                                        title = {item.title}
+                                        star = {item.star}
+                                        imdb ={item.imdb}
+                                        key={key}
+                                        />
+                                ))}
+
+                            </ScrollView>
+
                         </View>
-                        <View style={{lex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    backgroundColor: '#92BBD9'}}>
-                            <Text style={{color: '#fff',
-                                            fontSize: 30,
-                                            fontWeight: 'bold'}}>And simple</Text>
-                        </View>
-                        </Swiper> */}
+                        
+                        
 
                     </Content>
                     

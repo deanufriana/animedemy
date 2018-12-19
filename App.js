@@ -1,5 +1,5 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation'
-import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen } from './app/screens'
+import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen,MovieScreen,SearchScreen,CategoryScreen } from './app/screens'
 import Login from './app/screenContoh/Login'
 
 
@@ -33,10 +33,28 @@ const App = createStackNavigator(
             navigationOptions: {
                 header: null
             }
-        }
+        },
+        Movie:{
+            screen:MovieScreen,
+            navigationOptions:{
+                header:null
+            }
+        },
+        Search:{
+            screen:SearchScreen,
+            navigationOptions:{
+                header:null
+            }
+        },
+        Category:{
+            screen:CategoryScreen,
+            navigationOptions:{
+                header:null
+            }
+        },
     },
     {
-        initialRouteName: 'Login'
+        initialRouteName: 'Category'
     }
 )
 
