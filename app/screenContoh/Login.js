@@ -3,16 +3,19 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { GET_VIDEO, ALL_VIDEOS } from '../actions/video';
 import Video from 'react-native-video'
-import { Container, Icon } from 'native-base';
+import { Container, Icon, Button } from 'native-base'
+import Orientation from 'react-native-orientation'
 
 class Login extends Component {
 
     state = {
-        pause: true
+        pause: true,
+        fullscreen: false
     }
 
     componentDidMount() {
         this.props.dispatch(ALL_VIDEOS())
+        Orientation.lockToPortrait()
     }
 
     listVideo = () => {
@@ -35,11 +38,19 @@ class Login extends Component {
         }
     }
 
-    onBuffer = () => {
+    fullscreen = () => {
+        this.setState({ fullscreen: !this.state.fullscreen })
+        if (!this.state.fullscreen) {
+            Orientation.lockToLandscape()
+        } else {
+            Orientation.lockToPortrait()
+        }
+
+    }
+
+    Buffer = () => {
         return (
-            <Container>
-                <Text> Loading </Text>
-            </Container>
+            <Text> Loading </Text>
         )
     }
 
@@ -51,29 +62,47 @@ class Login extends Component {
 
     press = () => this.setState({ pause: !this.state.pause })
 
+    controlButton = () => {
+        if (this.state.pause) {
+            return (
+                <View style={{ flex: 1 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                        <Icon name='skip-backward' style={{ color: 'white', marginHorizontal: 50, marginTop: 40 }} />
+
+                        <Icon onPress={this.press} name='play' style={{ color: 'white', marginHorizontal: 50, marginTop: 40 }} />
+
+                        <Icon name='skip-forward' style={{ color: 'white', marginHorizontal: 50, marginTop: 40 }} />
+                    </View>
+                    <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', margin: 10, }}>
+                        <Icon style={{ color: 'white' }} name={this.state.fullscreen ? "phone-portrait" : "phone-landscape" } onPress={this.fullscreen} />
+                    </View>
+                </View>
+            )
+        }
+    }
+
     render() {
         return (
-            <View>
-                <TouchableOpacity onPress={this.press}>
+            <Container>
+                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }} onPress={this.press}>
                     <Video source={{ uri: "https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8" }}   // Can be a URL or a local file.
                         ref={(ref) => {
                             this.player = ref
                         }}                                      // Store reference
-                        onBuffer={this.onBuffer}                // Callback when remote video is buffering
+                        onBuffer={this.Buffer}                // Callback when remote video is buffering
                         onError={this.videoError}
-                        fullscreen={true}
+                        fullscreen={this.state.fullscreen}
                         resizeMode={"stretch"}
                         paused={this.state.pause}
-                        control={true}
                         // Callback when video cannot be loaded
                         style={styles.backgroundVideo}
                     />
-                    <Icon name='person' style={{color: 'white'}} />
+                    {this.controlButton()}
                 </TouchableOpacity>
-
-
+                {this.state.fullscreen || (<View style={{ flex: 2 }}></View>)
+                }
                 {/* {this.listVideo()} */}
-            </View>
+            </Container>
         )
     }
 }
@@ -85,8 +114,8 @@ var styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         right: 0,
-        width: null, 
-        height: 170
+        width: null,
+        height: null
     },
 })
 
