@@ -59,10 +59,7 @@ class LoginScreen extends Component {
                             </Text>
                             </TouchableOpacity>
                         </View>
-
-
                     </View>
-
                 </LinearGradient>
             </Container>
         )

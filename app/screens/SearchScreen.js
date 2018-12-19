@@ -3,9 +3,7 @@ import {Text,View,StyleSheet,ScrollView,Image,TextInput,FlatList,SectionList,Tou
 import {Container, Header, Left, Body, Right, Icon, Content} from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
 
-
-
-class SeacrhScreen extends Component{
+class SearchScreen extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -28,8 +26,6 @@ class SeacrhScreen extends Component{
         }
     }
 
-   
-
     render(){
         return(
             <Container>
@@ -45,7 +41,6 @@ class SeacrhScreen extends Component{
                             style={styles.input}
                             placeholder='Search'
                             placeholderTextColor='grey'
-
                             />
                         </Body>
                         
@@ -71,7 +66,7 @@ class SeacrhScreen extends Component{
     }
 }
 
-export default SeacrhScreen
+export default SearchScreen
 
 const styles = StyleSheet.create({
     linearGradient: {

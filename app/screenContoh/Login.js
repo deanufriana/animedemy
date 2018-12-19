@@ -88,7 +88,9 @@ class Login extends Component {
                     <Video source={{ uri: "https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8" }}   // Can be a URL or a local file.
                         ref={(ref) => {
                             this.player = ref
-                        }}                                      // Store reference
+                        }}
+                        poster={"http://cdn56.picsart.com/175939569000202.gif"}      
+                        posterResizeMode={'cover'}                                // Store reference
                         onBuffer={this.Buffer}                // Callback when remote video is buffering
                         onError={this.videoError}
                         fullscreen={this.state.fullscreen}

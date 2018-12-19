@@ -1,6 +1,8 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen,MovieScreen,SearchScreen,CategoryScreen } from './app/screens'
 import Login from './app/screenContoh/Login'
+import Home from './app/screenContoh/Home'
+import CusCardView from './app/components/CusCardView';
 
 
 const App = createStackNavigator(
@@ -34,6 +36,12 @@ const App = createStackNavigator(
                 header: null
             }
         },
+        Contoh: {
+            screen: Home,
+            navigationOptions: {
+                header: null
+            }
+        },
         Movie:{
             screen:MovieScreen,
             navigationOptions:{
@@ -52,9 +60,12 @@ const App = createStackNavigator(
                 header:null
             }
         },
+        CusView: {
+            screen: CusCardView
+        }
     },
     {
-        initialRouteName: 'Category'
+        initialRouteName: 'Movie'
     }
 )
 

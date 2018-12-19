@@ -6,4 +6,4 @@ import MovieScreen from './MovieScreen'
 import SearchScreen from './SearchScreen'
 import CategoryScreen from './CategoryScreen'
 
-export { LoginScreen, SplashScreen, DirectoryScreen, RegisterScreen, MovieScreen,SearchScreen,CategoryScreen }
+export { LoginScreen, SplashScreen, DirectoryScreen, RegisterScreen, MovieScreen, SearchScreen, CategoryScreen }
