@@ -1,9 +1,10 @@
 /* Ini merupakan action function dimana nantinya akan di panggil di tampilan dan menetapkan data dimana ia dibutuhkan */
-import categories from '../data/categories'
 import axios from 'axios'
 //headers: {'Authorization': "bearer " + token}
+import deviceStorage from '../data/deviceStorage'
+
 var config = {
-    headers: { 'Authorization': "Bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU0NTIwNjM1MX0.fMrFon_pojgl9fNpYSmvTmMC9o51Kq7gwuVXH7Po5mo' }
+    headers: { 'Authorization': "Bearer " + deviceStorage.getKey() }
 }
 
 export function ALL_VIDEOS() {
@@ -11,7 +12,7 @@ export function ALL_VIDEOS() {
         type: "ALL_VIDEOS",
         payload: axios.get('http://192.168.1.116:3333/api/v1/videos',
             config
-        )
+        ),
     }
 }
 
@@ -24,11 +25,20 @@ export function GET_VIDEO(id) {
     }
 }
 
-export function SEARCH(name) {
+export function SEARCH(text) {
     return {
-        type: "SEARCH",
-        payload: axios.get(`http://192.168.1.116:3333/api/videos/search?search=${name}`,
+        type: "ALL_VIDEOS",
+        payload: axios.get(`http://192.168.1.116:3333/api/v1/videos/search?search=${text}`,
             config
         )
+    }
+}
+
+export function POPULAR() {
+    return {
+        type: "POPULAR",
+        payload: axios.get('http://192.168.1.116:3333/api/v1/videos/popular',
+            config
+        ),
     }
 }

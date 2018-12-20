@@ -2,8 +2,8 @@ import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen,MovieScreen,SearchScreen,CategoryScreen } from './app/screens'
 import Login from './app/screenContoh/Login'
 import Home from './app/screenContoh/Home'
-import CusCardView from './app/components/CusCardView';
-
+import CusCardView from './app/components/CusCardView'
+import deviceStorage from './app/data/deviceStorage'
 
 const App = createStackNavigator(
     {
@@ -65,7 +65,8 @@ const App = createStackNavigator(
         }
     },
     {
-        initialRouteName: 'Movie'
+        // (deviceStorage.getKey ? 'Directory' : 'Login')
+        initialRouteName: 'Directory'
     }
 )
 

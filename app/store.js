@@ -7,7 +7,7 @@ const store = createStore(
     reducers,
     applyMiddleware(
         promiseMiddleware()
-    )
+    ),
 )
 
 export default store

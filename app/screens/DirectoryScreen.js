@@ -5,13 +5,14 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import Slide from '../components/Swiper'
 import CusCardView from '../components/CusCardView'
-import { ALL_VIDEOS } from '../actions/video';
+import { ALL_VIDEOS, POPULAR } from '../actions/video'
 import { connect } from 'react-redux'
 
 class DirectoryScreen extends Component {
 
     componentDidMount() {
         this.props.dispatch(ALL_VIDEOS())
+        this.props.dispatch(POPULAR())
     }
 
     constructor(props) {
@@ -53,11 +54,11 @@ class DirectoryScreen extends Component {
         }
     }
 
-    ScrollView = () => {
+    allVideos = () => {
         if (this.props.video.isLoading) {
-            return <Text style={{color: 'white'}}>Loading</Text>
+            return <Text style={{ color: 'white' }}>Loading</Text>
         } else if (this.props.video.isError) {
-            return <Text style={{color: 'white'}}>Eror Bro</Text>
+            return <Text style={{ color: 'white' }}>Server Tidak Dapat DiJaungkau</Text>
         } else {
             return this.props.video.results.map((item) => (
                 <CusCardView {...this.props}
@@ -71,11 +72,30 @@ class DirectoryScreen extends Component {
                 />
             ))
         }
+    }
 
-
+    popular = () => {
+        if (this.props.popular.isLoading) {
+            return <Text style={{ color: 'white' }}>Loading</Text>
+        } else if (this.props.popular.isError) {
+            return <Text style={{ color: 'white' }}>Server Tidak Dapat DiJaungkau</Text>
+        } else {
+            return this.props.popular.results.map((item) => (
+                <CusCardView {...this.props}
+                    image={item.image}
+                    age={item.age_restriction}
+                    title={item.title}
+                    star={item.imdb_score}
+                    imdb={item.imdb_score}
+                    key={item.id}
+                    id={item.id}
+                />
+            ))
+        }
     }
 
     render() {
+       // {this.props.video.isLoading || alert(JSON.stringify(this.props.video))}
         return (
             <Container>
                 <LinearGradient colors={['#010101', '#1A222E']} style={styles.linearGradient}>
@@ -89,7 +109,7 @@ class DirectoryScreen extends Component {
                             </Text>
                         </Body>
                         <Right style={{ flex: 1, marginRight: 5 }}>
-                            <Icon name='md-search' style={{ color: 'white' }} />
+                            <Icon onPress={() => this.props.navigation.navigate('Search')} name='md-search' style={{ color: 'white' }} />
                         </Right>
                     </Header>
                     <Content>
@@ -102,7 +122,7 @@ class DirectoryScreen extends Component {
 
                             </View>
                             <ScrollView horizontal style={{ marginLeft: 20, marginTop: 10 }} showsHorizontalScrollIndicator={false}>
-                                {this.ScrollView()}
+                                {this.allVideos()}
                             </ScrollView>
 
                         </View>
@@ -115,36 +135,19 @@ class DirectoryScreen extends Component {
 
                             </View>
                             <ScrollView horizontal style={{ marginLeft: 20, marginTop: 10, marginBottom: 10 }} showsHorizontalScrollIndicator={false}>
-                                {this.state.Best.map((item, key) => (
-                                    <CusCardView {...this.props}
-                                        image={item.image}
-                                        age={item.age}
-                                        title={item.title}
-                                        star={item.star}
-                                        imdb={item.imdb}
-                                        key={key}
-                                    />
-                                ))}
-
+                                {this.popular()}
                             </ScrollView>
-
                         </View>
-
-
-
                     </Content>
-
-
-
                 </LinearGradient>
-
             </Container>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    video: state.videoReducers
+    video: state.videoReducers,
+    popular: state.popularReducers
 })
 
 export default connect(mapStateToProps)(DirectoryScreen)

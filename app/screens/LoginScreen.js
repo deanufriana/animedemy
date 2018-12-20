@@ -5,21 +5,29 @@ import LinearGradient from 'react-native-linear-gradient'
 import CustomTextInput from '../components/CustomTextInput'
 import CustomTextInputPass from '../components/CustomTextInputPass'
 import { connect } from 'react-redux'
-import { LOGIN } from '../actions/users'
+import axios from 'axios'
+import deviceStorage from '../data/deviceStorage'
 
 class LoginScreen extends Component {
-
-    componentDidMount() {
-        this.props.dispatch(LOGIN())
-    }
 
     state = {
         email: '',
         password: ''
     }
 
-    validasi = () => {
-        return ((this.state.email == "Admin") && (this.state.password == "Admin")) ? this.props.navigation.navigate('Directory') : alert('Email Dan Password Salah')
+    login = () => {
+        axios.post('http://192.168.1.116:3333/api/v1/login', {
+            email: this.state.email,
+            password: this.state.password
+        }).then((response) => {
+            // alert(JSON.stringify(response.data))
+            deviceStorage.saveKey("id_token", response.data.token)
+            this.props.navigation.navigate('Directory')
+        }).catch((error) => {
+            alert(JSON.stringify(error))
+        })
+        // return (
+        //     (this.state.email == "Admin") && (this.state.password == "Admin")) ? this.props.navigation.navigate('Directory') : alert('Email Dan Password Salah')
     }
 
     render() {
@@ -39,7 +47,7 @@ class LoginScreen extends Component {
                             placeholder='Password'
                         />
 
-                        <Button onPress={this.validasi} style={{ backgroundColor: '#00C0C1', width: '100%', height: 50, marginTop: 30, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
+                        <Button onPress={this.login} style={{ backgroundColor: '#00C0C1', width: '100%', height: 50, marginTop: 30, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
                             <Text style={{ fontFamily: 'Roboto-Medium', color: 'white', fontSize: 18 }}>
                                 Login
                                 </Text>
@@ -67,7 +75,7 @@ class LoginScreen extends Component {
 }
 
 mapStateToProps = (state) => ({
-    login: state.userReducers
+    login: state.userReducers,
 })
 
 export default connect(mapStateToProps)(LoginScreen)

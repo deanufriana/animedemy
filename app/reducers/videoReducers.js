@@ -3,6 +3,7 @@
 const initialState = {
     results: [],
     data: {},
+    popular: [],
     isLoading: true,
     isError: false
 }
@@ -29,6 +30,13 @@ function videoReducers(state = initialState, action) {
         case "SEARCH_FULFILLED":
             return { ...state, isLoading: false, results: action.payload.data }
         case "SEARCH_REJECTED":
+            return { ...state, isLoading: false, isError: true }
+
+        case "POPULAR_PENDING":
+            return { ...state, isLoading: true, popular: action.payload }
+        case "POPULAR_FULFILLED":
+            return { ...state, isLoading: false, popular: action.payload.data }
+        case "POPULAR_REJECTED":
             return { ...state, isLoading: false, isError: true }
 
         default:
