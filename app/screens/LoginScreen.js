@@ -44,7 +44,7 @@ class LoginScreen extends Component {
 
                         <CustomTextInputPass
                             onChangeText={(password) => this.setState({ password })}
-                            placeholder='Password'
+                            placeholder='Password'secureTextEntry={true}
                         />
 
                         <Button onPress={this.login} style={{ backgroundColor: '#00C0C1', width: '100%', height: 50, marginTop: 30, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>

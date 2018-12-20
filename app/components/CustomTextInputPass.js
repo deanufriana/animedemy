@@ -4,7 +4,7 @@ import React,{Component} from 'react'
 class CustomTextInputPass extends Component{
     render(){
         return(
-            <TextInput style={[styles.textInput]} onChangeText={this.props.onChangeText} placeholderTextColor='#595959' placeholder={this.props.placeholder}/>
+            <TextInput style={[styles.textInput]} onChangeText={this.props.onChangeText} placeholderTextColor='#595959' placeholder={this.props.placeholder} secureTextEntry={this.props.secureTextEntry}/>
         )
     }
 }

@@ -11,14 +11,12 @@ import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import { Title } from 'native-base';
 
-const {width} = Dimensions.get('window')
-
 const Slider = props =>(
   <View style={styles.container}>
     
     <ImageBackground style={styles.image} source={props.uri}>
       <View style={{flex:1,justifyContent:'flex-end'}}>
-          <LinearGradient colors={['rgba(0,0,0,0)', '#1A222E']} style={{height:80,width:'100%'}}>
+          <LinearGradient colors={['rgba(0,0,0,0)', '#1A222E']} style={{height:80,width:null}}>
               <View style={{justifyContent:'center',flex:1,marginLeft:16}}>
               <Text style={{fontSize:22,color:'white',fontFamily:'OpenSans-Bold'}}>{props.title}</Text>
               </View> 

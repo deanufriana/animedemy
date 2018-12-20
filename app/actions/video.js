@@ -42,3 +42,12 @@ export function POPULAR() {
         ),
     }
 }
+
+export function DETAIL_VIDEO(id) {
+    return {
+        type: "DETAIL_VIDEO",
+        payload: axios.get(`http://192.168.1.116:3333/api/v1/video/${id}`,
+            config
+        )
+    }
+}
