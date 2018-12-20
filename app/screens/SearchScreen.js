@@ -83,9 +83,23 @@ class SearchScreen extends Component {
                                 keyExtractor={(item, index) => index}
                             />
                         </View> */}
-                            <List style={{backgroundColor: 'white'}}>
+                            {/* <List style={{backgroundColor: 'white'}}>
                                 {this.state.text != '' ? this.searchList() : <Text>Tidak Ada Data</Text>}
-                            </List>
+                            </List> */}
+
+
+
+                            <List>
+                            {this.state.data.map((item,key)=>(
+                                <ListItem key={key}>
+                                <Text style={{  fontSize: 14,
+                                                fontFamily:'Roboto-Bold',
+                                                color:'white'}}>{this.state.text != '' ? this.searchList() : <Text>Tidak Ada Data</Text>}</Text>
+                              </ListItem>
+                            ))}
+                        </List>
+
+
                         </View>
                     </Content>
                 </LinearGradient>
