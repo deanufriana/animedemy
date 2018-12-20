@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image } from 'react-native'
-import { Container, Header, Left, Body, Right, Icon, Content } from 'native-base'
+import { Text, View, StyleSheet, ScrollView, Image,RefreshControl } from 'react-native'
+import { Container, Header, Left, Body, Right, Icon, Content,Drawer } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
 
 import Slide from '../components/Swiper'
 import CusCardView from '../components/CusCardView'
 import { ALL_VIDEOS, POPULAR } from '../actions/video'
 import { connect } from 'react-redux'
+import SideMenu from '../components/SideMenu'
 
 class DirectoryScreen extends Component {
 
@@ -50,9 +51,19 @@ class DirectoryScreen extends Component {
                 imdb: '8.0'
 
             }
-            ]
+            ],
+            refreshing: false,
         }
     }
+
+
+    // _onRefresh = () => {
+    //     this.setState({refreshing: true});
+    //     fetchData().then(() => {
+    //       this.setState({refreshing: false});
+    //     });
+    //   }
+
 
     allVideos = () => {
         if (this.props.video.isLoading) {
@@ -94,53 +105,93 @@ class DirectoryScreen extends Component {
         }
     }
 
+    closeDrawer =()=>{
+        this.drawer._root.close()
+    }
+
+    openDrawer =()=>{
+        this.drawer._root.open()
+    }
+
     render() {
        // {this.props.video.isLoading || alert(JSON.stringify(this.props.video))}
         return (
-            <Container>
-                <LinearGradient colors={['#010101', '#1A222E']} style={styles.linearGradient}>
-                    <Header style={{ backgroundColor: '#010101' }}>
-                        <Left style={{ flex: 1, marginLeft: 5 }}>
-                            <Icon name='md-menu' style={{ color: 'white' }} />
-                        </Left>
-                        <Body style={{ flex: 8, alignItems: 'center' }}>
-                            <Text style={{ fontFamily: 'Roboto-Medium', fontSize: 14, color: 'white' }}>
-                                Discovery
-                            </Text>
-                        </Body>
-                        <Right style={{ flex: 1, marginRight: 5 }}>
-                            <Icon onPress={() => this.props.navigation.navigate('Search')} name='md-search' style={{ color: 'white' }} />
-                        </Right>
-                    </Header>
-                    <Content>
-                        <Slide />
-                        <View>
-                            <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
-                                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 18, color: '#00C0C1' }}>
-                                    New Release
+            
+        
+
+            <Drawer
+                ref={(ref) => { this.drawer = ref; }}
+                content={<SideMenu />}
+                onClose={() => this.closeDrawer()}
+                type='displace'
+            >
+
+    
+                <Container>
+                   
+
+                    
+                    <LinearGradient colors={['#010101', '#1A222E']} style={styles.linearGradient}>
+                        <Header style={{ backgroundColor: '#010101' }}>
+                            <Left style={{ flex: 1, marginLeft: 5 }}>
+                                <Icon name='md-menu' style={{ color: 'white' }} onPress={()=> this.drawer._root.open()} />
+                            </Left>
+                            <Body style={{ flex: 8, alignItems: 'center' }}>
+                                <Text style={{ fontFamily: 'Roboto-Medium', fontSize: 14, color: 'white' }}>
+                                    Discovery
                                 </Text>
+                            </Body>
+                            <Right style={{ flex: 1, marginRight: 5 }}>
+                                <Icon onPress={() => this.props.navigation.navigate('Search')} name='md-search' style={{ color: 'white' }} />
+                            </Right>
+                        </Header>
+                        
+                        <Content>
+                        <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
+                            />
+                        }
+                    >
+                            <Slide />
+                            <View>
+                                <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
+                                    <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 18, color: '#00C0C1' }}>
+                                        New Release
+                                    </Text>
+
+                                </View>
+                                <ScrollView horizontal style={{ marginLeft: 20, marginTop: 10 }} showsHorizontalScrollIndicator={false}>
+                                    {this.allVideos()}
+                                </ScrollView>
 
                             </View>
-                            <ScrollView horizontal style={{ marginLeft: 20, marginTop: 10 }} showsHorizontalScrollIndicator={false}>
-                                {this.allVideos()}
-                            </ScrollView>
 
-                        </View>
+                            <View>
+                                <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
+                                    <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 18, color: '#00C0C1' }}>
+                                        Best Popular
+                                    </Text>
 
-                        <View>
-                            <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
-                                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 18, color: '#00C0C1' }}>
-                                    Best Popular
-                                </Text>
-
+                                </View>
+                                <ScrollView horizontal style={{ marginLeft: 20, marginTop: 10, marginBottom: 10 }} showsHorizontalScrollIndicator={false}>
+                                    {this.popular()}
+                                </ScrollView>
                             </View>
-                            <ScrollView horizontal style={{ marginLeft: 20, marginTop: 10, marginBottom: 10 }} showsHorizontalScrollIndicator={false}>
-                                {this.popular()}
                             </ScrollView>
-                        </View>
-                    </Content>
-                </LinearGradient>
-            </Container>
+                        </Content>
+                        
+                    </LinearGradient>
+                    
+                </Container>
+
+                
+                
+            </Drawer>
+
+           
         )
     }
 }
