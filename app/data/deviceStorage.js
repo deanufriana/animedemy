@@ -22,11 +22,21 @@ const deviceStorage = {
 
     async getKey() {
         try {
-            userId = await AsyncStorage.getItem('id_token') || 'none'
+            return await AsyncStorage.getItem(';lajsldkjflkasjflk') || false
         } catch (error) {
             alert(error.message)
         }
         return userId
+    },
+
+    async removeKey(key) {
+        try {
+            await AsyncStorage.removeItem(key)
+            return true;
+        } catch (error) {
+            return alert(error.message)
+        }
+
     }
 }
 

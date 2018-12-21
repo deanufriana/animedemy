@@ -16,7 +16,7 @@ class LoginScreen extends Component {
     }
 
     login = () => {
-        axios.post('http://192.168.1.116:3333/api/v1/login', {
+        axios.post('http://157.230.47.235:3333/api/v1/login', {
             email: this.state.email,
             password: this.state.password
         }).then((response) => {

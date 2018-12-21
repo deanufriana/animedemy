@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import { Container, Form, Item, Input, Button } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
-import CustomTextInput from '../components/CustomTextInput'
 import CustomTextInputPass from '../components/CustomTextInputPass'
 import axios from 'axios';
 import deviceStorage from '../data/deviceStorage';
@@ -17,7 +16,7 @@ class RegisterScreen extends Component {
     }
 
     register = () => {
-        axios.post('http://192.168.1.116:3333/api/v1/register',
+        axios.post('http://157.230.47.235:3333/api/v1/register',
             {
                 username: this.state.email,
                 name: this.state.name,

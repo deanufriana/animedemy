@@ -2,7 +2,7 @@
 
 const initialState = {
     results: [],
-    data: {},
+    data: [],
     isLoading: true,
     isError: false
 }

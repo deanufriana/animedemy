@@ -12,16 +12,13 @@ import { connect } from 'react-redux'
 class MovieScreen extends Component {
 
     componentDidMount() {
-        this.props.dispatch(DETAIL_VIDEO(1))
+        this.props.dispatch(DETAIL_VIDEO(this.props.navigation.getParam('id')))
+        Orientation.lockToPortrait()
     }
 
     state = {
         pause: true,
         fullscreen: false
-    }
-
-    componentDidMount() {
-        Orientation.lockToPortrait()
     }
 
     fullscreen = () => {
@@ -47,7 +44,7 @@ class MovieScreen extends Component {
     controlButton = () => {
         if (this.state.pause) {
             return (
-                <ImageBackground source={{uri: this.props.detail.results[0].image_url}} style={styles.image}>
+                <ImageBackground source={{ uri: this.props.detail.data[0].image_url }} style={styles.image}>
                     <View style={{ flex: 1 }}>
                         <TouchableOpacity onPress={this.goBack}>
                             <View style={{ alignSelf: 'flex-start', marginLeft: 10, marginTop: 10, borderRadius: 150 / 2, backgroundColor: 'white', height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}>
@@ -64,18 +61,18 @@ class MovieScreen extends Component {
                         <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                             <LinearGradient colors={['rgba(0,0,0,0)', '#1A222E']} style={{ height: 80, width: '100%' }}>
                                 <View style={{ justifyContent: 'center', flex: 1, marginLeft: 16 }}>
-                                    <Text style={{ fontSize: 18, color: 'white', fontFamily: 'OpenSans-Bold' }}>{this.props.detail.results[0].title}</Text>
+                                    <Text style={{ fontSize: 18, color: 'white', fontFamily: 'OpenSans-Bold' }}>{this.props.detail.data[0].title}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', flex: 1, marginLeft: 16 }}>
                                     <View style={{ flex: 1, marginTop: 3, borderRightColor: 'white', borderRightWidth: 3, height: 20 }}>
                                         <Text style={{ fontFamily: 'Open-Sans-Bold', fontSize: 14, color: 'white' }}>
-                                            {this.props.detail.results[0].age_restriction}
+                                            {this.props.detail.data[0].age_restriction}
                                         </Text>
                                     </View>
 
                                     <View style={{ flexDirection: 'row', flex: 8, marginTop: 1, marginLeft: 10 }}>
-                                        <Star score={this.props.detail.results[0].imdb_score / 2} style={{ width: 90, height: 16, marginTop: 3 }} />
-                                        <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 16, color: 'white', marginLeft: 5 }}>{this.props.detail.results[0].imdb_score}</Text>
+                                        <Star score={this.props.detail.data[0].imdb_score / 2} style={{ width: 90, height: 16, marginTop: 3 }} />
+                                        <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 16, color: 'white', marginLeft: 5 }}>{this.props.detail.data[0].imdb_score}</Text>
                                     </View>
 
                                     <View style={{ alignSelf: 'flex-end', margin: 10, }}>
@@ -90,28 +87,36 @@ class MovieScreen extends Component {
         }
     }
 
+    video = () => {
+        if (!this.props.detail.isLoading) {
+            return <TouchableOpacity style={{ justifyContent: 'space-between', flex: 1 }} onPress={this.press}>
+                <Video source={{ uri: this.props.detail.data[0].video_url }}   // Can be a URL or a local file.
+                    ref={(ref) => {
+                        this.player = ref
+                    }}
+                    // poster={ "http://cdn56.picsart.com/175939569000202.gif"}
+                    // posterResizeMode={'cover'}                                // Store reference
+                    onBuffer={this.Buffer}                // Callback when remote video is buffering
+                    onError={this.videoError}
+                    fullscreen={this.state.fullscreen}
+                    resizeMode={"stretch"}
+                    paused={this.state.pause}
+                    // Callback when video cannot be loaded
+                    style={styles.backgroundVideo}
+                />
+
+                {this.controlButton()}
+            </TouchableOpacity>
+        } else {
+            return <Text>Loading</Text>
+        }
+    }
+
     render() {
+        console.log(this.props.detail)
         return (
             <Container>
-                <TouchableOpacity style={{ justifyContent: 'space-between', flex: 1 }} onPress={this.press}>
-                    
-                    <Video source={{ uri: this.props.detail.results[0].video_url }}   // Can be a URL or a local file.
-                        ref={(ref) => {
-                            this.player = ref
-                        }}
-                        // poster={ "http://cdn56.picsart.com/175939569000202.gif"}
-                        // posterResizeMode={'cover'}                                // Store reference
-                        onBuffer={this.Buffer}                // Callback when remote video is buffering
-                        onError={this.videoError}
-                        fullscreen={this.state.fullscreen}
-                        resizeMode={"stretch"}
-                        paused={this.state.pause}
-                        // Callback when video cannot be loaded
-                        style={styles.backgroundVideo}
-                    />
-
-                    {this.controlButton()}
-                </TouchableOpacity>
+                {this.video()}
                 {
                     this.state.fullscreen ||
                     <LinearGradient colors={['#010101', '#1A222E']} style={styles.linearGradient}>
@@ -126,7 +131,7 @@ class MovieScreen extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    detail: state.videoReducers
+    detail: state.detailReducers
 })
 
 export default connect(mapStateToProps)(MovieScreen)
