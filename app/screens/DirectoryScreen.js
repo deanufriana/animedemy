@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, RefreshControl } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, RefreshControl,ActivityIndicator } from 'react-native'
 import { Container, Header, Left, Body, Right, Icon, Content, Drawer } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -67,7 +67,16 @@ class DirectoryScreen extends Component {
 
     allVideos = () => {
         if (this.props.video.isLoading) {
-            return <Text style={{ color: 'white' }}>Loading</Text>
+            // return <Text style={{ color: 'white' }}>Loading</Text>
+            return (
+                <View style={{flex: 1,
+                    justifyContent: 'center',flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    padding: 10}}>
+                  
+                  <ActivityIndicator size="small" color="white" />
+                 
+                </View>)
         } else if (this.props.video.isError) {
             return <Text style={{ color: 'white' }}>Server Tidak Dapat DiJaungkau</Text>
         } else {
