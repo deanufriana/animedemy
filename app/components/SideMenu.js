@@ -4,15 +4,12 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
   StyleSheet,
   TouchableWithoutFeedback,
   AsyncStorage
-} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import deviceStorage from "../data/deviceStorage";
-
-import { NavigationActions } from "react-navigation";
+} from "react-native"
+import LinearGradient from "react-native-linear-gradient"
+import deviceStorage from "../data/deviceStorage"
 
 class SideMenu extends Component {
   constructor(props) {
@@ -20,55 +17,54 @@ class SideMenu extends Component {
     this.state = {
       isSubsribe: false,
       isLogin: false,
-      toket : false
+      token: false
     };
   }
 
-   displayButton() {
-    
-      if (!this.state.isSubsribe) {
-        return (
-          <Button
-            style={{
-              width: 100,
-              backgroundColor: "#CE0606",
-              alignSelf: "center",
-              justifyContent: "center",
-              alignItems: "center",
-              height: 40
-            }}
-            onPress={() => this.setState({ isSubsribe: !this.state.isSubsribe })}
-          >
-            <Text style={{ color: "white" }}>Subscribe</Text>
-          </Button>
-        );
-      } 
-        return (
-          <Button
-            style={{
-              width: 100,
-              backgroundColor: "#010101",
-              borderColor: "#CE0606",
-              alignSelf: "center",
-              borderWidth: 2,
-              justifyContent: "center",
-              alignItems: "center",
-              height: 40
-            }}
-            onPress={() => this.setState({ isSubsribe: false })}
-          >
-            <Text style={{ color: "#CE0606" }}>Unsubscribe</Text>
-          </Button>
-        );
-      
-   
+  displayButton() {
+
+    if (!this.state.isSubsribe) {
+      return (
+        <Button
+          style={{
+            width: 100,
+            backgroundColor: "#CE0606",
+            alignSelf: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            height: 40
+          }}
+          onPress={() => this.setState({ isSubsribe: !this.state.isSubsribe })}
+        >
+          <Text style={{ color: "white" }}>Subscribe</Text>
+        </Button>
+      );
+    }
+    return (
+      <Button
+        style={{
+          width: 100,
+          backgroundColor: "#010101",
+          borderColor: "#CE0606",
+          alignSelf: "center",
+          borderWidth: 2,
+          justifyContent: "center",
+          alignItems: "center",
+          height: 40
+        }}
+        onPress={() => this.setState({ isSubsribe: false })}
+      >
+        <Text style={{ color: "#CE0606" }}>Unsubscribe</Text>
+      </Button>
+    );
+
+
   }
 
-  logout = () => {
-    if (deviceStorage.removeKey("id_token")) {
-      return this.props.navigation.navigate("Login");
-    }
-    return alert("Terjadi Kesalahan");
+  logout = async () => {
+    await AsyncStorage.removeItem('token').then(() =>
+      this.props.navigation.push("Directory")
+    )
   };
 
   displayLogout() {
@@ -86,15 +82,13 @@ class SideMenu extends Component {
     }
   }
 
-  async componentDidMount(){
-    const toket = await AsyncStorage.getItem('token');
-    alert(toket);
-    if(toket.length > 8){
- this.setState({
-      toket : true
-    })
+  async componentDidMount() {
+    const token = await AsyncStorage.getItem('token');
+    if (token !== null) {
+      this.setState({
+        token: true
+      })
     }
-   
   }
 
   render() {
@@ -117,18 +111,18 @@ class SideMenu extends Component {
               />
             </View>
             <View style={{ flex: 2, marginTop: 20 }}>
-              {this.state.toket  && this.displayButton() ||  <Button
-          style={{
-            backgroundColor: "#00C0C1",
-            alignSelf: "center",
-            width: 100,
-            height: 40,
-            justifyContent: "center"
-          }}
-          onPress={() => this.props.navigation.navigate("Login")}
-        >
-          <Text style={{ color: "white" }}>Login</Text>
-        </Button>}
+              {this.state.token && this.displayButton() || <Button
+                style={{
+                  backgroundColor: "#00C0C1",
+                  alignSelf: "center",
+                  width: 100,
+                  height: 40,
+                  justifyContent: "center"
+                }}
+                onPress={() => this.props.navigation.navigate("Login")}
+              >
+                <Text style={{ color: "white" }}>Login</Text>
+              </Button>}
             </View>
 
             {/* {this.state.isSubsribe?(<Button style={{padding:10,backgroundColor:'#CE0606',alignSelf:'center'}} onPress={()=>this.setState({isSubsribe:false})}>
@@ -217,7 +211,7 @@ class SideMenu extends Component {
             </List>
           </View>
 
-          {this.displayLogout()}
+          {this.state.token && this.displayLogout()}
         </LinearGradient>
       </Container>
     );

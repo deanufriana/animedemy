@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image, TextInput, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { Container, Form, Item, Input, Button } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient'
 import CustomTextInput from '../components/CustomTextInput'
@@ -12,18 +12,20 @@ class LoginScreen extends Component {
 
     state = {
         email: '',
-        password: ''
+        password: '',
+        isLoading: false
     }
 
     login = () => {
+        this.setState({ isLoading: true })
         axios.post('http://157.230.47.235:3333/api/v1/login', {
             email: this.state.email,
             password: this.state.password
         }).then((response) => {
-            alert('data')
-            // alert(JSON.stringify(response.data))
-            deviceStorage.saveKey(response.data.token)
-            this.props.navigation.navigate('Directory')
+            deviceStorage.saveKey(response.data.token).then(() =>
+                this.props.navigation.push('Directory'),
+                this.setState({ isLoading: false })
+            )
         }).catch((error) => {
             alert('Username & Password')
         })
@@ -38,7 +40,8 @@ class LoginScreen extends Component {
                     <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={require('../assets/img/logo.png')} style={{ width: 200, height: 200 }} />
                     </View>
-                    <View style={{ flex: 4 }}>
+                    {this.state.isLoading && <ActivityIndicator />}
+                    <View style={{ flex: 4, marginTop: 20 }}>
                         <CustomTextInput
                             onChangeText={(email) => this.setState({ email })}
                             placeholder='Email' />
