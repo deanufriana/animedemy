@@ -1,12 +1,23 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, TextInput, FlatList, SectionList, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, TextInput, FlatList, SectionList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { Container, Header, Left, Body, Right, Icon, Content, Drawer } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
 import GridList from 'react-native-grid-list';
 import Star from 'react-native-star-view';
 import SideMenu from '../components/SideMenu'
+import { CATEGORY_ID } from '../actions/video'
+import { connect } from 'react-redux'
 
 class CategoryScreen extends Component {
+
+    componentDidMount() {
+        this.props.dispatch(CATEGORY_ID(this.props.navigation.getParam('id', 'nodata')))
+    }
+
+    category = (id) => {
+        this.props.dispatch(CATEGORY_ID(id))
+    }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -87,17 +98,19 @@ class CategoryScreen extends Component {
     }
 
     renderItem = ({ item, index }) => (
-        <View style={{ width: 110, height: 200 }}>
-            <Image source={item.image} style={{ width: 100, height: 140 }} />
-            <View style={{ flexDirection: 'column', marginTop: 5 }}>
-                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 12, color: 'white' }}>{item.age}</Text>
-                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 14, color: 'white' }}>{item.title}</Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <Star score={item.star} style={{ width: 60, height: 12, marginTop: 1 }} />
-                    <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 10, color: 'white', marginLeft: 3 }}>{item.imdb}</Text>
+        <TouchableOpacity key={item.id} onPress={() => this.props.navigation.navigate('Movie', { id: item.id })} >
+            <View style={{ width: 110, height: 200 }}>
+                <Image source={{ uri: item.image_url }} style={{ width: 100, height: 140 }} />
+                <View style={{ flexDirection: 'column', marginTop: 5 }}>
+                    <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 12, color: 'white' }}>{item.age_restriction}</Text>
+                    <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 14, color: 'white' }}>{item.title}</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Star score={item.imdb_score / 2} style={{ width: 60, height: 12, marginTop: 1 }} />
+                        <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 10, color: 'white', marginLeft: 3 }}>{item.imdb_score}</Text>
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 
     closeDrawer = () => {
@@ -137,16 +150,17 @@ class CategoryScreen extends Component {
                                         Action
                                 </Text>
                                 </View>
-
                             </Body>
                         </Header>
                         <Content style={{ marginTop: 10 }}>
-                            <GridList
-                                data={this.state.listAnime}
-                                numColumns={3}
-                                renderItem={this.renderItem}
-                                columnWrapperStyle={{ marginBottom: 90, marginLeft: 14 }}
-                            />
+                            {this.props.category.isLoading ? <ActivityIndicator /> :
+                                <GridList
+                                    data={this.props.category.resultsCategory}
+                                    numColumns={3}
+                                    renderItem={this.renderItem}
+                                    columnWrapperStyle={{ marginBottom: 90, marginLeft: 14 }}
+                                />
+                            }
                         </Content>
                     </LinearGradient>
                 </Container>
@@ -155,7 +169,11 @@ class CategoryScreen extends Component {
     }
 }
 
-export default CategoryScreen
+const mapStateToProps = state => ({
+    category: state.categoryReducers
+});
+
+export default connect(mapStateToProps)(CategoryScreen)
 
 const styles = StyleSheet.create({
     linearGradient: {

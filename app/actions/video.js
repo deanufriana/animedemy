@@ -26,7 +26,7 @@ export function GET_VIDEO(id) {
 
 export function SEARCH(text) {
     return {
-        type: "ALL_VIDEOS",
+        type: "SEARCH",
         payload: axios.get(ip+`/api/v1/videos/search?search=${text}`    )
     }
 }
@@ -42,5 +42,26 @@ export function DETAIL_VIDEO(id) {
     return {
         type: "DETAIL_VIDEO",
         payload: axios.get(ip+`/api/v1/video/${id}`    )
+    }
+}
+
+export function RELATED(id) {
+    return {
+        type: "RELATED",
+        payload: axios.get(ip+ `/api/v1/video/${id}/related`)
+    }
+}
+
+export function CATEGORY_ID(id) {
+    return {
+        type: "CATEGORY_ID",
+        payload: axios.get(ip+ `/api/v1/videos/category/${id}`)
+    }
+}
+
+export function SERIES_ID(id) {
+    return {
+        type: "SERIES_ID",
+        payload: axios.get(ip+ `/api/v1/videos/series/${id}`)
     }
 }

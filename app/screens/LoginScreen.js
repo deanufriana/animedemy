@@ -20,14 +20,11 @@ class LoginScreen extends Component {
             email: this.state.email,
             password: this.state.password
         }).then((response) => {
-            // alert(JSON.stringify(response.data))
             deviceStorage.saveKey("id_token", response.data.token)
             this.props.navigation.navigate('Directory')
         }).catch((error) => {
-            alert(JSON.stringify(error))
+            alert('Username & Password Salah')
         })
-        // return (
-        //     (this.state.email == "Admin") && (this.state.password == "Admin")) ? this.props.navigation.navigate('Directory') : alert('Email Dan Password Salah')
     }
 
     render() {
@@ -44,7 +41,7 @@ class LoginScreen extends Component {
 
                         <CustomTextInputPass
                             onChangeText={(password) => this.setState({ password })}
-                            placeholder='Password'secureTextEntry={true}
+                            placeholder='Password' secureTextEntry={true}
                         />
 
                         <Button onPress={this.login} style={{ backgroundColor: '#00C0C1', width: '100%', height: 50, marginTop: 30, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>

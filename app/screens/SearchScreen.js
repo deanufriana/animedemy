@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, TextInput, FlatList, SectionList, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, TextInput, FlatList, SectionList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { Container, Header, Left, Body, Right, Icon, Content, List, ListItem, Thumbnail } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
 import { SEARCH } from '../actions/video';
@@ -36,16 +36,16 @@ class SearchScreen extends Component {
 
     searchList = () => {
         if (this.props.video.isLoading) {
-            return <Text style={{ color: 'white' }}>Loading</Text>
+            return <ActivityIndicator />
         } else if (this.props.video.isError) {
-            return <Text>Sedang Ada Masalah Jaringan</Text>
+            return <Text>Data Tidak Ditemukan</Text>
         } else {
             return (
-                this.props.video.results.map((data) =>
+                this.props.video.resultsSearch.map((data) =>
                     (
-                        <ListItem avatar key={data.id}>
+                        <ListItem avatar key={data.id} onPress={() => this.props.navigation.navigate('Movie', { id: data.id })}>
                             <Left>
-                                <Thumbnail source={{ uri: 'Image URL' }} />
+                                <Thumbnail source={{ uri: data.image_url }} />
                             </Left>
                             <Body style={{
                                 fontSize: 14,
@@ -53,7 +53,7 @@ class SearchScreen extends Component {
                                 color: 'white'
                             }}>
                                 <Text >{data.title}</Text>
-                                <Text note> {data.starring}</Text>
+                                <Text note>Episode : {data.episode}</Text>
                             </Body>
                         </ListItem>
                     ))
@@ -71,15 +71,15 @@ class SearchScreen extends Component {
                         </Left>
                         <Body style={{ flex: 8 }}>
                             <TextInput
-                                onChange={(text) => this.search(text)}
+                                onChangeText={(text) => this.search(text)}
                                 style={styles.input}
                                 placeholder='Search'
                                 placeholderTextColor='grey'
                             />
                         </Body>
                     </Header>
-                    <Content>
-                        <View style={styles.container}>
+                    <Content style={{color: 'white', flex:1}}>
+                        <View>
                             {/* <SectionList
                                 sections={this.state.sections}
                                 renderItem={({ item }) => <TouchableOpacity><Text style={styles.item}>{item}</Text></TouchableOpacity>}

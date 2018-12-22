@@ -5,7 +5,9 @@ import {
   StyleSheet,
   Dimensions,
   ImageBackground,
-  TouchableOpacity, Platform
+  TouchableOpacity,
+  Platform,
+  ActivityIndicator
 } from "react-native";
 import { Container, Content, Icon } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
@@ -14,13 +16,11 @@ import TryTab from "../components/TryTab";
 import Video from "react-native-video";
 import Orientation from "react-native-orientation";
 import { DETAIL_VIDEO } from "../actions/video";
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 
 import WebView from 'react-native-android-fullscreen-webview-video';
 
 class MovieScreen extends Component {
-  uri =
-    "https://www.blogger.com/video.g?token=AD6v5dzsk56t_uLeu8AeKuSIOzbe_vn56qlUxwtFA9hQl8MxFiu9bZ9yyVWG0zfJKF9CTISPsfsDhIdBx1lejenfBANnF6s_4fxLe5VKN4DjpMJYRH6DOWDfGrmY8uf9aNxeUeX5RH0m";
 
   componentDidMount() {
     this.props.dispatch(DETAIL_VIDEO(this.props.navigation.getParam("id")));
@@ -218,7 +218,6 @@ class MovieScreen extends Component {
   };
 
   render() {
-    console.log(this.props.detail);
     return (
       <Container>
         {/* {this.video()} */}
@@ -232,23 +231,27 @@ class MovieScreen extends Component {
           />
         </View> */}
 
-        <View style={{height:200}}>
-        <WebView
-            style={styles.WebViewContainer}
-            source={{ uri: "https://r7---sn-4pgnuhxqp5-jb3s.googlevideo.com/videoplayback?id=3eb6c58f6f3e2d7e&itag=18&source=blogger&mm=31&mn=sn-4pgnuhxqp5-jb3s&ms=au&mv=m&pl=19&ei=TL8cXPuBIozj-gOqs7ioCA&susc=bl&mime=video/mp4&dur=1434.017&lmt=1544958167672166&mt=1545387708&ip=139.192.149.86&ipbits=0&expire=1545416652&sparams=ip,ipbits,expire,id,itag,source,mm,mn,ms,mv,pl,ei,susc,mime,dur,lmt&signature=9187D99259430F52055661AEFEF35EEB83CE5A589DE388E217AEC0264ED2221E.56A32E4693A9226D931E3FAE1590B71F19920EC1850474FFB4346EDC65F4DAA9&key=us0&cpn=ExD69gQQ9RpUGEwF&c=WEB_EMBEDDED_PLAYER&cver=20181220" }}
-          />
-
+        <View style={{ height: 200, justifyContent: 'center' }}>
+          {this.props.detail.isLoading ? (
+            <ActivityIndicator />
+          ) : (
+              <WebView
+                style={styles.WebViewContainer}
+                source={{ uri: this.props.detail.data[0].video_url }}
+              />)
+          }
         </View>
-
-
 
         {this.state.fullscreen || (
           <LinearGradient
             colors={["#010101", "#1A222E"]}
             style={styles.linearGradient}
           >
-            <View style={{ flex: 1, backgroundColor: "#1A222E" }}>
-              <TryTab />
+            <View style={{ flex: 1, backgroundColor: "#1A222E", justifyContent:'center' }}>
+              {this.props.detail.isLoading ? (
+                <ActivityIndicator />
+              ) : (<TryTab deskripsi={this.props.detail.data[0].description} {...this.props} series_id={this.props.detail.data[0].series_id} id={this.props.detail.data[0].id} category={this.props.detail.data[0].category_id} />)
+              }
             </View>
           </LinearGradient>
         )}
@@ -286,8 +289,8 @@ const styles = StyleSheet.create({
     flex: 2
   },
   WebViewContainer: {
- 
+
     marginTop: (Platform.OS == 'ios') ? 20 : 0,
- 
+
   }
 });

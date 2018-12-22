@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, RefreshControl,ActivityIndicator } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, RefreshControl, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { Container, Header, Left, Body, Right, Icon, Content, Drawer } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -69,27 +69,32 @@ class DirectoryScreen extends Component {
         if (this.props.video.isLoading) {
             // return <Text style={{ color: 'white' }}>Loading</Text>
             return (
-                <View style={{flex: 1,
-                    justifyContent: 'center',flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    padding: 10}}>
-                  
-                  <ActivityIndicator size="small" color="white" />
-                 
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center', flexDirection: 'row',
+                    padding: 10
+                }}>
+
+                    <ActivityIndicator size="small" color="white" />
+
                 </View>)
         } else if (this.props.video.isError) {
-            return <Text style={{ color: 'white' }}>Server Tidak Dapat DiJaungkau</Text>
+            return <Text style={{ color: 'white' }}>Server Tidak Dapat Dijangkau</Text>
         } else {
             return this.props.video.results.map((item) => (
-                <CusCardView {...this.props}
-                    image={item.image}
-                    age={item.age_restriction}
-                    title={item.title}
-                    star={item.imdb_score}
-                    imdb={item.imdb_score}
-                    key={item.id}
-                    id={item.id}
-                />
+                <TouchableOpacity key={item.id} onPress={() => this.props.navigation.navigate('Movie', { id: item.id })} >
+                    <CusCardView {...this.props}
+                        image={item.image_url}
+                        age={item.age_restriction}
+                        title={item.title}
+                        star={item.imdb_score}
+                        imdb={item.imdb_score}
+                        series={item.id}
+                        category={item.category_id}
+                        id={item.series_id}
+                        episode={item.episode}
+                    />
+                </TouchableOpacity>
             ))
         }
     }
@@ -101,15 +106,17 @@ class DirectoryScreen extends Component {
             return <Text style={{ color: 'white' }}>Server Tidak Dapat DiJaungkau</Text>
         } else {
             return this.props.popular.results.map((item) => (
-                <CusCardView {...this.props}
-                    image={item.image}
-                    age={item.age_restriction}
-                    title={item.title}
-                    star={item.imdb_score}
-                    imdb={item.imdb_score}
-                    key={item.id}
-                    id={item.id}
-                />
+                <TouchableOpacity key={item.id} onPress={() => this.props.navigation.navigate('Movie', { id: item.id })} >
+                    <CusCardView {...this.props}
+                        image={item.image_url}
+                        age={item.age_restriction}
+                        title={item.title}
+                        star={item.imdb_score}
+                        imdb={item.imdb_score}
+                        id={item.series_id}
+                        episode={item.episode}
+                    />
+                </TouchableOpacity>
             ))
         }
     }
@@ -125,21 +132,13 @@ class DirectoryScreen extends Component {
     render() {
         // {this.props.video.isLoading || alert(JSON.stringify(this.props.video))}
         return (
-
-
-
             <Drawer
                 ref={(ref) => { this.drawer = ref; }}
                 content={<SideMenu {...this.props} />}
                 onClose={() => this.closeDrawer()}
                 type='displace'
             >
-
-
                 <Container>
-
-
-
                     <LinearGradient colors={['#010101', '#1A222E']} style={styles.linearGradient}>
                         <Header style={{ backgroundColor: '#010101' }}>
                             <Left style={{ flex: 1, marginLeft: 5 }}>
@@ -195,9 +194,6 @@ class DirectoryScreen extends Component {
                     </LinearGradient>
 
                 </Container>
-
-
-
             </Drawer>
 
 

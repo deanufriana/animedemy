@@ -134,7 +134,7 @@ class SideMenu extends Component {
             </Button>
             )} */}
           </View>
-          <TouchableWithoutFeedback  onPress={()=> this.props.navigation.navigate('Directory')}>
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Directory')}>
             <View style={{ flex: 2, marginLeft: 20, justifyContent: "center" }} >
               <Text
                 style={{
@@ -169,8 +169,20 @@ class SideMenu extends Component {
             />
             <List>
               <ListItem
-                onPress={() => this.props.navigation.navigate('Category')}
+                onPress={() => this.props.navigation.push('Category', { id: 1 })}
               >
+                <Text
+                  style={{
+                    color: "white",
+                    fontFamily: "Roboto-Medium",
+                    fontSize: 14
+                  }}
+                >
+                  Adventure
+                </Text>
+              </ListItem>
+              <ListItem
+                onPress={() => this.props.navigation.push('Category', { id: 2 })} >
                 <Text
                   style={{
                     color: "white",
@@ -181,7 +193,8 @@ class SideMenu extends Component {
                   Action
                 </Text>
               </ListItem>
-              <ListItem>
+              <ListItem
+                onPress={() => this.props.navigation.push('Category', { id: 3 })} >
                 <Text
                   style={{
                     color: "white",
@@ -189,7 +202,7 @@ class SideMenu extends Component {
                     fontSize: 14
                   }}
                 >
-                  Romance
+                  Comedy
                 </Text>
               </ListItem>
             </List>
