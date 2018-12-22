@@ -2,37 +2,28 @@ import { AsyncStorage } from 'react-native'
 
 const deviceStorage = {
 
-    async saveKey(key, value) {
+    async saveKey(value) {
         try {
-            await AsyncStorage.setItem(key, value);
-            if (value != null) {
-                this.setState({
-                    bearer: value,
-                    isLoading: false
-                })
-            } else {
-                this.setState({
-                    isLoading: false
-                })
-            }
+            await AsyncStorage.setItem('token', value)
+            
         } catch (error) {
+            alert('kali eror' + error.toString())
             console.log('AsyncStorage Error: ' + error.message);
         }
     },
 
     async getKey() {
         try {
-            return await AsyncStorage.getItem(';lajsldkjflkasjflk') || false
+            return await AsyncStorage.getItem('token') || false
         } catch (error) {
             alert(error.message)
         }
         return userId
     },
 
-    async removeKey(key) {
+    async removeKey() {
         try {
-            await AsyncStorage.removeItem(key)
-            return true;
+            await AsyncStorage.removeItem('token')
         } catch (error) {
             return alert(error.message)
         }

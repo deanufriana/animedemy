@@ -20,11 +20,15 @@ class LoginScreen extends Component {
             email: this.state.email,
             password: this.state.password
         }).then((response) => {
-            deviceStorage.saveKey("id_token", response.data.token)
+            alert('data')
+            // alert(JSON.stringify(response.data))
+            deviceStorage.saveKey(response.data.token)
             this.props.navigation.navigate('Directory')
         }).catch((error) => {
-            alert('Username & Password Salah')
+            alert('Username & Password')
         })
+        // return (
+        //     (this.state.email == "Admin") && (this.state.password == "Admin")) ? this.props.navigation.navigate('Directory') : alert('Email Dan Password Salah')
     }
 
     render() {

@@ -140,7 +140,7 @@ class TryTab extends Component {
                 <ScrollView tabLabel='Description' style={{ backgroundColor: '#1A222E' }}>
                     <View style={{ height: 380 }}>
                         <View style={{ flex: 1, marginTop: 10 }}>
-                            <Text style={{ textAlign: 'center', fontFamily: 'Roboto-Medium', fontSize: 14, color: 'white' }}>{this.props.deskripsi.substring(0, 150)}...</Text>
+                            <Text style={{ textAlign: 'center', fontFamily: 'Roboto-Medium', fontSize: 14, color: 'white' }}>{this.props.deskripsi.substring(0, 170)}...</Text>
 
                         </View>
                         <View style={{ flex: 2, borderTopWidth: 3, borderTopColor: '#00C0C1' }}>

@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  AsyncStorage
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import deviceStorage from "../data/deviceStorage";
@@ -18,12 +19,13 @@ class SideMenu extends Component {
     super(props);
     this.state = {
       isSubsribe: false,
-      isLogin: false
+      isLogin: false,
+      toket : false
     };
   }
 
-  displayButton() {
-    if (deviceStorage.getKey()) {
+   displayButton() {
+    
       if (!this.state.isSubsribe) {
         return (
           <Button
@@ -35,12 +37,12 @@ class SideMenu extends Component {
               alignItems: "center",
               height: 40
             }}
-            onPress={() => this.setState({ isSubsribe: this.state.isSubsribe })}
+            onPress={() => this.setState({ isSubsribe: !this.state.isSubsribe })}
           >
             <Text style={{ color: "white" }}>Subscribe</Text>
           </Button>
         );
-      } else {
+      } 
         return (
           <Button
             style={{
@@ -58,23 +60,8 @@ class SideMenu extends Component {
             <Text style={{ color: "#CE0606" }}>Unsubscribe</Text>
           </Button>
         );
-      }
-    } else {
-      return (
-        <Button
-          style={{
-            backgroundColor: "#00C0C1",
-            alignSelf: "center",
-            width: 100,
-            height: 40,
-            justifyContent: "center"
-          }}
-          onPress={() => this.props.navigation.navigate("Login")}
-        >
-          <Text style={{ color: "white" }}>Login</Text>
-        </Button>
-      );
-    }
+      
+   
   }
 
   logout = () => {
@@ -99,6 +86,17 @@ class SideMenu extends Component {
     }
   }
 
+  async componentDidMount(){
+    const toket = await AsyncStorage.getItem('token');
+    alert(toket);
+    if(toket.length > 8){
+ this.setState({
+      toket : true
+    })
+    }
+   
+  }
+
   render() {
     // {
     //   alert(JSON.stringify(deviceStorage.getKey()));
@@ -119,7 +117,18 @@ class SideMenu extends Component {
               />
             </View>
             <View style={{ flex: 2, marginTop: 20 }}>
-              {this.displayButton()}
+              {this.state.toket  && this.displayButton() ||  <Button
+          style={{
+            backgroundColor: "#00C0C1",
+            alignSelf: "center",
+            width: 100,
+            height: 40,
+            justifyContent: "center"
+          }}
+          onPress={() => this.props.navigation.navigate("Login")}
+        >
+          <Text style={{ color: "white" }}>Login</Text>
+        </Button>}
             </View>
 
             {/* {this.state.isSubsribe?(<Button style={{padding:10,backgroundColor:'#CE0606',alignSelf:'center'}} onPress={()=>this.setState({isSubsribe:false})}>

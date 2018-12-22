@@ -27,7 +27,7 @@ class RegisterScreen extends Component {
             deviceStorage.saveKey("id_token", response.data.token)
             this.props.navigation.navigate('Directory')
         }).catch((error) => {
-            alert(JSON.stringify(error))
+            alert('Terjadi Kesalahan Server. Register Gagal Coba Lagi Nanti')
         })
     }
 
