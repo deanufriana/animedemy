@@ -1,11 +1,13 @@
+import React, {Component} from 'react'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
-import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen,MovieScreen,SearchScreen,CategoryScreen } from './app/screens'
+import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen, MovieScreen, SearchScreen, CategoryScreen } from './app/screens'
 import Login from './app/screenContoh/Login'
 import Home from './app/screenContoh/Home'
 import CusCardView from './app/components/CusCardView'
 import deviceStorage from './app/data/deviceStorage'
+import OneSignal from 'react-native-onesignal';
 
-const App = createStackNavigator(
+const Appdua = createStackNavigator(
     {
         Login: {
             screen: LoginScreen,
@@ -42,22 +44,22 @@ const App = createStackNavigator(
                 header: null
             }
         },
-        Movie:{
-            screen:MovieScreen,
-            navigationOptions:{
-                header:null
+        Movie: {
+            screen: MovieScreen,
+            navigationOptions: {
+                header: null
             }
         },
-        Search:{
-            screen:SearchScreen,
-            navigationOptions:{
-                header:null
+        Search: {
+            screen: SearchScreen,
+            navigationOptions: {
+                header: null
             }
         },
-        Category:{
-            screen:CategoryScreen,
-            navigationOptions:{
-                header:null
+        Category: {
+            screen: CategoryScreen,
+            navigationOptions: {
+                header: null
             }
         },
         CusView: {
@@ -70,4 +72,43 @@ const App = createStackNavigator(
     }
 )
 
-export default createAppContainer(App)
+const Appcontainer = createAppContainer(Appdua)
+
+export default class App extends Component {
+    constructor(properties) {
+        super(properties);
+        OneSignal.init("c234dc31-4823-4573-a30a-8596565b6250");
+
+        OneSignal.addEventListener('received', this.onReceived);
+        OneSignal.addEventListener('opened', this.onOpened);
+        OneSignal.addEventListener('ids', this.onIds);
+    }
+
+    componentWillUnmount() {
+        OneSignal.removeEventListener('received', this.onReceived);
+        OneSignal.removeEventListener('opened', this.onOpened);
+        OneSignal.removeEventListener('ids', this.onIds);
+    }
+
+    onReceived(notification) {
+        console.log("Notification received: ", notification);
+    }
+
+    onOpened(openResult) {
+        console.log('Message: ', openResult.notification.payload.body);
+        console.log('Data: ', openResult.notification.payload.additionalData);
+        console.log('isActive: ', openResult.notification.isAppInFocus);
+        console.log('openResult: ', openResult);
+    }
+
+    onIds(device) {
+        console.log('Device info: ', device);
+    }
+
+    render() {
+        return (
+            <Appcontainer />
+
+        )
+    }
+}

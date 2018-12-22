@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import { Container, Form, Item, Input, Button } from 'native-base'
 import LinearGradient from 'react-native-linear-gradient';
 import CustomTextInputPass from '../components/CustomTextInputPass'
@@ -13,9 +13,11 @@ class RegisterScreen extends Component {
         name: '',
         email: '',
         password: '',
+        isLoading: false
     }
 
     register = () => {
+        this.setState({isLoading: true})
         axios.post('http://157.230.47.235:3333/api/v1/register',
             {
                 username: this.state.email,
@@ -24,10 +26,11 @@ class RegisterScreen extends Component {
                 password: this.state.password
             }
         ).then((response) => {
-            deviceStorage.saveKey("id_token", response.data.token)
-            this.props.navigation.navigate('Directory')
+            deviceStorage.saveKey(response.data.token).then(() =>
+                this.props.navigation.navigate('Login')
+            )
         }).catch((error) => {
-            alert('Terjadi Kesalahan Server. Register Gagal Coba Lagi Nanti')
+            alert('Terjadi Kesalahan Server. Register Gagal Coba Lagi Nanti'+ error)
         })
     }
 
@@ -49,7 +52,7 @@ class RegisterScreen extends Component {
                             placeholder='Name' />
                         <CustomTextInputPass onChangeText={(password) => this.setState({ password })}
                             placeholder='Password' secureTextEntry={true} />
-
+                        {this.state.isLoading && <ActivityIndicator />}
                         <Button onPress={this.register} style={{ backgroundColor: '#00C0C1', width: '100%', height: 50, marginTop: 30, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
                             <Text style={{ fontFamily: 'Roboto-Medium', color: 'white', fontSize: 18 }}>
                                 Register
