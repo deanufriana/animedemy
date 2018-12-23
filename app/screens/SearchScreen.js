@@ -10,21 +10,6 @@ class SearchScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            sections: [{
-                title: 'A', data: ['A Cheeky Angel', 'A Half Heavenly Girl', 'A Spirit of the Sun', 'A.I. Love You', 'A.I. Hunter']
-            },
-            {
-                title: 'B', data: ['Baby and I', 'Baby Love', 'Bakugan Battle Brawlers', 'Bambino!', 'Bambino! Secondo']
-            },
-            {
-                title: 'C', data: ['C.M.B.', 'Cash Girl', 'Candy Candy', 'Captain Tsubasa', 'Cardcaptor Sakura']
-            },
-            {
-                title: 'D', data: ['Daa! Daa! Daa!', 'Daikichis', 'Dan Doh!!', 'Danganronpa', 'Darah Satria']
-            },
-            {
-                title: 'E', data: ['Eternal Blue Sky', 'Eternal Sabath', 'Esper Mami', 'Eromanga Sensei']
-            }],
             text: ''
         }
     }
@@ -78,7 +63,7 @@ class SearchScreen extends Component {
                             />
                         </Body>
                     </Header>
-                    <Content style={{color: 'white', flex:1}}>
+                    <Content style={{ color: 'white', flex: 1 }}>
                         <View>
                             {/* <SectionList
                                 sections={this.state.sections}

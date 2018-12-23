@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
-import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen, MovieScreen, SearchScreen, CategoryScreen } from './app/screens'
+import { LoginScreen, RegisterScreen, DirectoryScreen, SplashScreen, MovieScreen, SearchScreen, CategoryScreen, Search } from './app/screens'
 import Login from './app/screenContoh/Login'
 import Home from './app/screenContoh/Home'
 import CusCardView from './app/components/CusCardView'
@@ -39,7 +39,7 @@ const Appdua = createStackNavigator(
             }
         },
         Contoh: {
-            screen: Home,
+            screen: Search,
             navigationOptions: {
                 header: null
             }
@@ -64,11 +64,11 @@ const Appdua = createStackNavigator(
         },
         CusView: {
             screen: CusCardView
-        }
+        },
     },
     {
         // (deviceStorage.getKey ? 'Directory' : 'Login')
-        initialRouteName: 'Directory'
+        initialRouteName: 'Contoh'
     }
 )
 
